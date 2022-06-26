@@ -97,6 +97,56 @@ app.post(`/user`, async (req, res) => {
   res.json(result)
 })
 
+
+app.get(`/profile`, async (req, res) => {
+  const result = await prisma.profile.findMany()
+  res.json(result)
+})
+
+app.get(`/profile/:email`, async (req, res) => {
+  const result = await prisma.user.findUnique({
+    where: {
+      email: req.params.email
+    }
+  }).profile()
+  res.json(result)
+})
+
+app.post('/profile', async (req, res)=> {
+  const { bio, email }  = req.body
+  const result = await prisma.profile.create({
+    data: {
+      bio,
+      user: {
+        connect: {
+          email,
+        }
+      }
+    }
+  })
+  
+  res.json(result)
+})
+
+app.put('/profile/:email', async (req, res)=> {
+  const { email }  = req.params
+  const { bio }  = req.body
+  const result = await prisma.user.update({
+    where: {
+      email,
+    },
+    data: {
+      profile: {
+        update: {
+          bio
+        }
+      }
+    }
+  })
+  
+  res.json(result)
+})
+
 const server = app.listen(3001, () =>
   console.log(
     '🚀 Server ready at: http://localhost:3001',
