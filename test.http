@@ -1,0 +1,17 @@
+###
+GET http://localhost:3001
+
+###
+GET http://localhost:3001/profile
+
+###
+GET http://localhost:3001/profile/ginlink@163.com
+
+###
+POST http://localhost:3001/profile
+content-type: application/json
+
+{
+  "bio": "I am a boy",
+  "email": "ginlink@163.com"
+}
